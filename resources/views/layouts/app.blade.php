@@ -275,6 +275,7 @@ footer{
 .text-center{text-align:center}
 .text-danger{color:var(--danger)}
 .text-decoration-none{text-decoration:none}
+.show{display:block!important}
 code{background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:12px;color:#1e40af}
 
 /* Steps indicator */

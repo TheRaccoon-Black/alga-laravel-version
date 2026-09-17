@@ -37,7 +37,9 @@
   </a>
 </div>
 
+@auth
 <h2 class="section-label">Panel Admin</h2>
+@endauth
 <div class="menu">
   <a href="{{ route('admin.import.index') }}">
     <span class="ikon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
@@ -64,4 +66,5 @@
     <span><b>Evaluasi Model</b><small>Akurasi, precision, recall, F1-score</small></span>
   </a>
 </div>
+@endauth
 @endsection
