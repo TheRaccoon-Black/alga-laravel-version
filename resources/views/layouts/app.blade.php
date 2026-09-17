@@ -330,8 +330,32 @@ code{background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:12px;color:#
   <nav class="topbar-links">
     <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a>
     <a href="{{ route('konsultasi.index') }}" class="{{ request()->routeIs('konsultasi*') ? 'active' : '' }}">Konsultasi</a>
-    <a href="{{ route('konsultasi.riwayat') }}" class="{{ request()->routeIs('konsultasi.riwayat') ? 'active' : '' }}">Riwayat</a>
-    <a href="{{ route('admin.import.index') }}" class="{{ request()->routeIs('admin*') ? 'active' : '' }}">Admin</a>
+    @auth
+      <a href="{{ route('admin.import.index') }}" class="{{ request()->routeIs('admin*') ? 'active' : '' }}">Admin</a>
+      <div style="position:relative">
+        <button onclick="document.getElementById('userMenu').classList.toggle('show')" style="background:none;border:none;cursor:pointer;padding:5px 10px;border-radius:6px;font-size:13px;color:var(--text-sec);display:flex;align-items:center;gap:6px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          {{ Auth::user()->name }}
+        </button>
+        <div id="userMenu" style="display:none;position:absolute;right:0;top:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);min-width:180px;box-shadow:0 4px 20px rgba(0,0,0,.1);z-index:300;margin-top:4px">
+          <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600">{{ Auth::user()->name }}</div>
+          <a href="{{ route('profile.edit') }}" style="display:block;padding:8px 14px;font-size:13px;color:var(--text);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:8px"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profil
+          </a>
+          <form method="POST" action="{{ route('logout') }}" style="display:block">
+            @csrf
+            <button type="submit" style="width:100%;text-align:left;padding:8px 14px;font-size:13px;color:#dc2626;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:8px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Keluar
+            </button>
+          </form>
+        </div>
+      </div>
+    @endauth
+    @guest
+      <a href="{{ route('login') }}" style="color:var(--accent);font-weight:600">Masuk</a>
+    @endguest
   </nav>
 </header>
 
@@ -477,7 +501,15 @@ document.addEventListener('click', function(e){
     sb.classList.remove('open');
   }
 });
+
+// Close user menu on outside click
+document.addEventListener('click', function(e){
+  var m = document.getElementById('userMenu');
+  if (m && !m.contains(e.target) && !e.target.closest('[onclick*="userMenu"]')) {
+    m.style.display = 'none';
+  }
+});
 </script>
 @stack('scripts')
 </body>
-</html>
+
