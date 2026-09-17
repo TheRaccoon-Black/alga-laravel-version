@@ -45,10 +45,18 @@ a{text-decoration:none;color:inherit}
 <div style="min-height:100vh;display:flex">
   {{-- Left: Landing / Branding --}}
   <div style="flex:1;background:linear-gradient(135deg,#0f1c3f 0%,#1e3a5f 50%,#2563eb 100%);display:flex;flex-direction:column;justify-content:center;padding:60px;color:#fff;position:relative;overflow:hidden">
-    <div style="position:absolute;inset:0;background:url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 800 800\"><defs><pattern id=\"g\" width=\"40\" height=\"40\" patternUnits=\"userSpaceOnUse\"><circle cx=\"20\" cy=\"20\" r=\"1\" fill=\"rgba(255,255,255,0.05)\"/></pattern></defs><rect fill=\"url(%23g)\" width=\"800\" height=\"800\"/></svg>')"></div>
+    <div style="position:absolute;inset:0;opacity:.12" aria-hidden="true">
+      <svg viewBox="0 0 800 800" preserveAspectRatio="none" style="width:100%;height:100%">
+        <defs>
+          <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse">
+            <circle cx="16" cy="16" r="1.5" fill="#fff"/>
+          </pattern>
+        </defs>
+        <rect fill="url(#dots)" width="800" height="800"/>
+      </svg>
+    </div>
     <div style="position:relative;z-index:1;max-width:440px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:40px">
-        <div style="width:48px;height:48px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px">🏥</div>
+      <div style="margin-bottom:40px">
         <div>
           <div style="font-size:18px;font-weight:700">Sispak Kulit</div>
           <div style="font-size:12px;opacity:.7">RSUD Hasanuddin Bengkulu Selatan</div>
