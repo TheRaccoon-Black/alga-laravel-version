@@ -164,6 +164,7 @@
 </div>
 @endif
 
+
 {{-- Penjelasan Hasil --}}
 @if(count($explanation) > 0)
 <div class="card mb-4" style="border-color:#bbf7d0;background:#f0fdf4">
