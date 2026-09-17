@@ -338,6 +338,61 @@ class NaiveBayesService
         return ['pesan' => $pesan];
     }
 
+    public function getExplanation(array $model, array $aktif, string $topId): array
+    {
+        $gejalaMap = array_column($this->getGejalaList(), 'nama_gejala', 'id_gejala');
+        $prior = $model['prior'] ?? [];
+        $likelihoods = $model['p'] ?? [];
+        $semuaGejala = $model['gejala'] ?? [];
+
+        if (empty($semuaGejala) || empty($prior)) {
+            // No trained model — return empty, view will show fallback
+            return [];
+        }
+
+        // Full posterior for top disease
+        $fullPost = $this->hitungPosterior($model, $aktif);
+        $topFullProb = $fullPost[$topId] ?? 0;
+
+        $contributions = [];
+
+        foreach ($aktif as $idG) {
+            $withoutG = array_values(array_filter($aktif, fn($g) => $g !== $idG));
+
+            if (empty($withoutG)) {
+                // Last symptom removed — treat as zero symptoms
+                $probWithout = $prior[$topId] ?? 0;
+            } else {
+                $probWithout = $fullPost[$topId] ?? 0;
+                // Recompute excluding this symptom
+                $probWithout = 0;
+                foreach ($prior as $idP => $pK) {
+                    $prob = $pK;
+                    foreach ($semuaGejala as $idG2) {
+                        if ($idG2 === $idG) continue;
+                        $pG = $likelihoods[$idP][$idG2] ?? 0.5;
+                        $isActive = in_array($idG2, $withoutG, true);
+                        $prob *= $isActive ? $pG : (1 - $pG);
+                    }
+                    $probWithout += $prob;
+                }
+                $total = array_sum($prior) ?: 1;
+                $probWithout = $total ? $probWithout / $total : 0;
+            }
+
+            $contribution = $topFullProb - $probWithout;
+            $contributions[] = [
+                'id_gejala'  => $idG,
+                'nama_gejala'=> $gejalaMap[$idG] ?? $idG,
+                'kontribusi' => round($contribution * 100, 2),
+                'p_ada'      => $likelihoods[$topId][$idG] ?? null,
+            ];
+        }
+
+        usort($contributions, fn($a, $b) => $b['kontribusi'] <=> $a['kontribusi']);
+        return $contributions;
+    }
+
     public function cariSaranKode(): string
     {
         $max = DB::table('data_kasus')

@@ -28,6 +28,7 @@ class KonsultasiController extends Controller
                 $post = $hasil['post'];
                 $nama = $hasil['nama'];
                 $detail = $hasil['detail'] ?? [];
+                $explanation = $hasil['explanation'] ?? [];
             } else {
                 $dipilih = $displayPost;
                 $model = $service->buildModel();
@@ -53,6 +54,7 @@ class KonsultasiController extends Controller
 
                 $idTop = array_key_first($post);
                 $top = $post[$idTop];
+                $explanation = $service->getExplanation($model, $dipilih, $idTop);
                 DB::table('konsultasi')->insert([
                     'waktu'      => now(),
                     'gejala_input' => json_encode($dipilih),
@@ -60,13 +62,14 @@ class KonsultasiController extends Controller
                     'prob_utama'   => $top,
                 ]);
                 session(['hasil_terakhir' => [
-                    'gejala' => $dipilih,
-                    'post'   => $post,
-                    'nama'   => $nama,
-                    'detail' => $detail,
+                    'gejala'      => $dipilih,
+                    'post'        => $post,
+                    'nama'        => $nama,
+                    'detail'      => $detail,
+                    'explanation' => $explanation,
                 ]]);
             }
-            return view('konsultasi.hasil', compact('dipilih', 'post', 'nama', 'detail'));
+            return view('konsultasi.hasil', compact('dipilih', 'post', 'nama', 'detail', 'explanation'));
         }
 
         return view('konsultasi.index', compact('gejalas'));

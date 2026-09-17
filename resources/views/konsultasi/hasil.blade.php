@@ -164,6 +164,41 @@
 </div>
 @endif
 
+{{-- Penjelasan Hasil --}}
+@if(count($explanation) > 0)
+<div class="card mb-4" style="border-color:#bbf7d0;background:#f0fdf4">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#166534">
+      Gejala Penentu Diagnosis
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text-sec);margin-bottom:14px">
+    Berikut gejala yang paling banyak mempengaruhi prediksi <b>{{ $nama[$top] ?? $top }}</b>:
+  </p>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    @foreach(array_slice($explanation, 0, 5) as $i => $e)
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fff;border:1px solid #bbf7d0;border-radius:6px">
+      <span style="width:22px;height:22px;border-radius:50%;background:#16a34a;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ $i + 1 }}</span>
+      <span style="flex:1;font-size:13px;font-weight:500;color:var(--text)">{{ $e['nama_gejala'] }}</span>
+      <span style="font-size:12px;font-weight:700;color:#166534;background:#dcfce7;padding:3px 10px;border-radius:20px">
+        @if($e['p_ada'] !== null)
+          P({{ $e['id_gejala'] }}|{{ $nama[$top] }}) = {{ round($e['p_ada'] * 100, 1) }}%
+        @else
+          tidak ada data
+        @endif
+      </span>
+    </div>
+    @endforeach
+  </div>
+  @if(count($explanation) > 5)
+  <div style="margin-top:10px;font-size:12px;color:var(--text-sec)">
+    + {{ count($explanation) - 5 }} gejala lainnya juga berkontribusi
+  </div>
+  @endif
+</div>
+@endif
+
 <div class="alert alert-info" style="margin-top:8px">
   <b>Catatan:</b> Hasil ini hanya bersifat praduga berdasarkan metode Na&iuml;ve Bayes.
   Konsultasikan dengan dokter untuk diagnosis yang pasti.
