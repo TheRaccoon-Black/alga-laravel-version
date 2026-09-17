@@ -22,7 +22,6 @@ class PenyakitSeeder extends Seeder
             ['PK10', 'Herpes Zoster'],
             ['PK11', 'Vitiligo'],
             ['PK12', 'Impetigo'],
-            ['PK13', 'Folikulitis'],
         ];
         foreach ($penyakit as $p) {
             Penyakit::updateOrCreate(['id_penyakit' => $p[0]], ['nama_penyakit' => $p[1]]);

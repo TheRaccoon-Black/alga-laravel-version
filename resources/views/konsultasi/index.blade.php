@@ -1,9 +1,14 @@
 @extends('layouts.app')
 @section('title', 'Konsultasi — Sispak Kulit')
 @section('content')
+<div class="page-header">
+  <div class="page-title">Konsultasi Diagnosis</div>
+  <div class="page-sub">Centang gejala yang dialami, lalu klik Diagnosa untuk mendapatkan prediksi penyakit kulit.</div>
+</div>
+
 <div class="card">
   <h2>Mulai Konsultasi</h2>
-  <p class="sub">Centang gejala-gejala yang Anda rasakan, lalu klik tombol Diagnosa untuk mendapatkan prediksi penyakit kulit.</p>
+  <p class="sub">Pilih gejala yang Anda rasakan.</p>
   <form method="post" action="{{ route('konsultasi.store') }}" onsubmit="return checkGejala()">
     @csrf
     <div class="checkbox-grid">
@@ -14,16 +19,21 @@
       </label>
       @endforeach
     </div>
-    <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
       <button type="button" id="btnPilihSemua" class="btn btn-outline btn-sm">Pilih Semua</button>
       <button type="button" id="btnHapusSemua"  class="btn btn-outline btn-sm">Hapus Semua</button>
-      <button type="submit" class="btn btn-primary">Diagnosa</button>
+      <button type="submit" class="btn btn-primary">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 2L9.5 20m0 0L7 12m2.5 8L12 4l2.5 14m0 0L17 12m-2.5-8L12 20"/></svg>
+        Diagnosa
+      </button>
     </div>
-    <p style="font-size:12px;color:var(--muted);margin-top:12px">
+    <p style="font-size:11px;color:var(--text-sec);margin-top:12px">
       Hasil ini hanya bersifat praduga. Konsultasikan dengan dokter untuk diagnosis yang pasti.
     </p>
   </form>
 </div>
+@endsection
+
 @push('scripts')
 <script>
 function checkGejala(){const c=document.querySelectorAll('input[name="gejala[]"]:checked');if(!c.length){alert('Pilih minimal satu gejala!');return false}}
@@ -31,4 +41,3 @@ document.getElementById('btnPilihSemua')?.addEventListener('click',()=>document.
 document.getElementById('btnHapusSemua')?.addEventListener('click',()=>document.querySelectorAll('input[name="gejala[]"]').forEach(cb=>cb.checked=false));
 </script>
 @endpush
-@endsection

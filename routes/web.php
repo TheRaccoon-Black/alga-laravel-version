@@ -9,11 +9,16 @@ use App\Http\Controllers\Admin\EvaluationController;
 use App\Http\Controllers\Admin\SplitDataController;
 use App\Http\Controllers\Admin\DeleteDataController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PenyakitController;
+use App\Http\Controllers\Admin\ModelController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/konsultasi', [KonsultasiController::class, 'index'])->name('konsultasi.index');
 Route::post('/konsultasi', [KonsultasiController::class, 'index'])->name('konsultasi.store');
+Route::get('/konsultasi/riwayat', [KonsultasiController::class, 'riwayat'])->name('konsultasi.riwayat');
+Route::delete('/konsultasi/riwayat/{id}', [KonsultasiController::class, 'hapusSatuan'])->name('konsultasi.hapus_satuan');
+Route::delete('/konsultasi/riwayat', [KonsultasiController::class, 'hapusSemua'])->name('konsultasi.hapus_riwayat');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -33,4 +38,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/delete', [DeleteDataController::class, 'index'])->name('delete.index');
     Route::post('/delete', [DeleteDataController::class, 'store'])->name('delete.store');
+
+    // Parameter Model
+    Route::get('/model', [ModelController::class, 'index'])->name('model.index');
+
+    // Master Penyakit CRUD
+    Route::get('/penyakit', [PenyakitController::class, 'index'])->name('penyakit.index');
+    Route::post('/penyakit', [PenyakitController::class, 'store'])->name('penyakit.store');
+    Route::put('/penyakit/{id}', [PenyakitController::class, 'update'])->name('penyakit.update');
+    Route::delete('/penyakit/{id}', [PenyakitController::class, 'destroy'])->name('penyakit.destroy');
 });
