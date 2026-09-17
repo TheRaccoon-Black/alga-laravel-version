@@ -363,7 +363,6 @@ class NaiveBayesService
                 // Last symptom removed — treat as zero symptoms
                 $probWithout = $prior[$topId] ?? 0;
             } else {
-                $probWithout = $fullPost[$topId] ?? 0;
                 // Recompute excluding this symptom
                 $probWithout = 0;
                 foreach ($prior as $idP => $pK) {
